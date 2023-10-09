@@ -52,5 +52,7 @@ astring_t* astring_slice(const astring_t* astr, size_t start, size_t end);
 bool astring_contains(const astring_t* astr, const astring_t* other);
 bool astring_containsc(const astring_t* astr, char c);
 bool astring_containss(const astring_t* astr, const char* str);
+size_t** astring_findallc(const astring_t* astr, const char c);
+bool astring_replaceindex(astring_t* astr, size_t index, const char c);
 
 #endif /* ASTRING_H */

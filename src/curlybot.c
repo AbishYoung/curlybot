@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
 
     printf("%s\n", querystring->raw);
     querystring_free(qs, true);
+    astring_free(querystring);
 
     return 0;
 }

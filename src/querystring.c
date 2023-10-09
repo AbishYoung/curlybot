@@ -27,7 +27,7 @@
 #include "querystring.h"
 
 /**
- * @brief Create a new querypair_t object
+ * @brief Create a new querypair_t object.
  * 
  * @public
  * 
@@ -45,7 +45,7 @@ querypair_t* querypair_new(astring_t* key, astring_t* value) {
 }
 
 /**
- * @brief Create a new querypair_t object
+ * @brief Create a new querypair_t object.
  * 
  * @public
  * 
@@ -63,7 +63,7 @@ querypair_t* querypair_from(const char* key, const char* value) {
 }
 
 /**
- * @brief Free a querypair_t object
+ * @brief Free a querypair_t object.
  * 
  * @note This function does not free the astring_t objects
  * 
@@ -79,7 +79,7 @@ void querypair_free(querypair_t* qp) {
 }
 
 /**
- * @brief Free a querypair_t object and also free the astring_t objects
+ * @brief Free a querypair_t object and also free the astring_t objects.
  * 
  * @public
  * 
@@ -95,7 +95,7 @@ void querypair_freeall(querypair_t* qp) {
 }
 
 /**
- * @brief Create a new querystring_t object
+ * @brief Create a new querystring_t object.
  * 
  * @public
  * 
@@ -110,7 +110,7 @@ querystring_t* querystring_new() {
 }
 
 /**
- * @brief Free a querystring_t object
+ * @brief Free a querystring_t object.
  * 
  * @public
  * 
@@ -133,7 +133,7 @@ void querystring_free(querystring_t* qs, bool all) {
 }
 
 /**
- * @brief Add a querypair_t object to a querystring_t object
+ * @brief Add a querypair_t object to a querystring_t object.
  * 
  * @public
  * 
@@ -157,7 +157,7 @@ querystring_t* querystring_add(querystring_t* qs, querypair_t* qp) {
 }
 
 /**
- * @brief Add a querypair_t object to a querystring_t object
+ * @brief Add a querypair_t object to a querystring_t object.
  * 
  * @public
  * 
@@ -174,7 +174,7 @@ querystring_t* querystring_addfrom(querystring_t* qs, const char* key, const cha
 }
 
 /**
- * @brief Remove a querypair_t object from a querystring_t object
+ * @brief Remove a querypair_t object from a querystring_t object.
  * 
  * @note This function does not free the astring_t objects
  * 
@@ -214,7 +214,7 @@ querystring_t* querystring_remove(querystring_t* qs, const char* key, bool all) 
 }
 
 /**
- * @brief Set the value of a querypair_t object in a querystring_t object
+ * @brief Set the value of a querypair_t object in a querystring_t object.
  * 
  * @public
  * 
@@ -240,7 +240,7 @@ querystring_t* querystring_set(querystring_t* qs, const char* key, astring_t* va
 }
 
 /**
- * @brief Get the value of a querypair_t object in a querystring_t object
+ * @brief Get the value of a querypair_t object in a querystring_t object.
  * 
  * @public
  * 
@@ -263,7 +263,7 @@ astring_t* querystring_get(const querystring_t* qs, const char* key) {
 }
 
 /**
- * @brief Convert a querystring_t object to a string
+ * @brief Convert a querystring_t object to a string.
  * 
  * @public
  * 

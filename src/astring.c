@@ -25,7 +25,7 @@
 #include "astring.h"
 
 /**
- * Creates a new astring with the given capacity.
+ * @brief Creates a new astring with the given capacity.
  *
  * @public
  *
@@ -48,7 +48,7 @@ astring_t* astring_new(size_t cap) {
 }
 
 /**
- * Frees the memory used by an astring.
+ * @brief Frees the memory used by an astring.
  *
  * @public
  *
@@ -66,7 +66,7 @@ void astring_free(astring_t* astr) {
 }
 
 /**
- * Resizes the capacity of an astring.
+ * @brief Resizes the capacity of an astring.
  *
  * @public
  *
@@ -94,7 +94,7 @@ astring_t* astring_resize(astring_t* astr, size_t cap) {
 }
 
 /**
- * Resizes the capacity of an astring to fit its length.
+ * @brief Resizes the capacity of an astring to fit its length.
  *
  * @public
  *
@@ -110,7 +110,7 @@ astring_t* astring_fit(astring_t* astr) {
 }
 
 /**
- * Creates a new astring from a null-terminated string.
+ * @brief Creates a new astring from a null-terminated string.
  *
  * @public
  *
@@ -133,7 +133,7 @@ astring_t* astring_from(const char* str) {
 }
 
 /**
- * Copies a null-terminated string into an astring.
+ * @brief Copies a null-terminated string into an astring.
  *
  * @public
  *
@@ -159,7 +159,7 @@ astring_t* astring_into(astring_t* astr, const char* str) {
 }
 
 /**
- * Appends a null-terminated string to an astring.
+ * @brief Appends a null-terminated string to an astring.
  *
  * @internal
  * 
@@ -189,7 +189,7 @@ astring_t* append_impl(astring_t* dest, const char* src, size_t src_len) {
 }
 
 /**
- * Prepends a null-terminated string to an astring.
+ * @brief Prepends a null-terminated string to an astring.
  *
  * @internal
  * 
@@ -221,7 +221,7 @@ astring_t* prepend_impl(astring_t* dest, const char* src, size_t src_len) {
 }
 
 /**
- * Appends a null-terminated string to an astring.
+ * @brief Appends a null-terminated string to an astring.
  *
  * @public
  * 
@@ -235,7 +235,7 @@ astring_t* astring_append(astring_t* astr, const char* str) {
 }
 
 /**
- * Prepends a null-terminated string to an astring.
+ * @brief Prepends a null-terminated string to an astring.
  *
  * @public
  * 
@@ -249,7 +249,7 @@ astring_t* astring_prepend(astring_t* astr, const char* str) {
 }
 
 /**
- * Appends an astring to another astring.
+ * @brief Appends an astring to another astring.
  *
  * @public
  * 
@@ -262,7 +262,7 @@ astring_t* astring_appenda(astring_t* dest, const astring_t* src) {
 }
 
 /**
- * Prepends an astring to another astring.
+ * @brief Prepends an astring to another astring.
  *
  * @public
  * 
@@ -275,7 +275,7 @@ astring_t* astring_prependa(astring_t* dest, const astring_t* src) {
 }
 
 /**
- * Checks if two astrings are equal.
+ * @brief Checks if two astrings are equal.
  *
  * @public
  *
@@ -291,7 +291,7 @@ bool astring_eq(const astring_t* astr1, const astring_t* astr2) {
 }
 
 /**
- * Checks if an astring is equal to a null-terminated string.
+ * @brief Checks if an astring is equal to a null-terminated string.
  *
  * @public
  *
@@ -307,7 +307,7 @@ bool astring_eqs(const astring_t* astr, const char* str) {
 }
 
 /**
- * Creates a new astring from a slice of another astring.
+ * @brief Creates a new astring from a slice of another astring.
  *
  * @public
  *
@@ -334,7 +334,7 @@ astring_t* astring_slice(const astring_t* astr, size_t start, size_t end) {
 }
 
 /**
- * Checks if a null-terminated string contains another null-terminated string.
+ * @brief Checks if a null-terminated string contains another null-terminated string.
  *
  * @internal
  * 
@@ -352,7 +352,7 @@ bool contains_impl(const char* astr, const char* src, size_t astr_len, size_t sr
 }
 
 /**
- * Checks if an astring contains another astring.
+ * @brief Checks if an astring contains another astring.
  *
  * @public
  * 
@@ -367,7 +367,7 @@ bool astring_contains(const astring_t* astr, const astring_t* src) {
 }
 
 /**
- * Checks if an astring contains a character.
+ * @brief Checks if an astring contains a character.
  *
  * @public
  * 
@@ -383,7 +383,7 @@ bool astring_containsc(const astring_t* astr, char c) {
 }
 
 /**
- * Checks if an astring contains a null-terminated string.
+ * @brief Checks if an astring contains a null-terminated string.
  *
  * @public
  * 
@@ -395,4 +395,53 @@ bool astring_containss(const astring_t* astr, const char* str) {
     if (astr == NULL || str == NULL) return false;
 
     return contains_impl(astr->raw, str, astr->len, strlen(str));
+}
+
+/**
+ * @brief Finds all instances of a character in an astring.
+ *
+ * @public
+ * 
+ * @param astr The astring to search in.
+ * @param c The character to search for.
+ * @return An array of indices where the character was found, or NULL if an error occurred.
+ */
+size_t** astring_findallc(const astring_t* astr, const char c) {
+    if (astr == NULL) return NULL;
+
+    size_t** indices = malloc(sizeof(size_t*));
+    if (indices == NULL) return NULL;
+
+    size_t count = 0;
+    size_t i = 0;
+    for (; i < astr->len; i++) {
+        if (astr->raw[i] == c) {
+            indices[count] = malloc(sizeof(size_t));
+            if (indices[count] == NULL) return NULL;
+
+            *indices[count] = i;
+            count++;
+        }
+    }
+
+    return indices;
+}
+
+/**
+ * @brief Replaces a character at an index in an astring.
+ *
+ * @public
+ * 
+ * @param astr The astring to replace the character in.
+ * @param index The index of the character to replace.
+ * @param c The character to replace the character at the index with.
+ * @return True if the character was replaced, false otherwise.
+ */
+bool astring_replaceindex(astring_t* astr, size_t index, const char c) {
+    if (astr == NULL || astr->raw == NULL) return false;
+    if (index > astr->len) return false;
+
+    astr->raw[index] = c;
+
+    return true;
 }
