@@ -174,14 +174,19 @@ astring_t* append_impl(astring_t* dest, const char* src, size_t src_len) {
     }
 
     if (dest->cap < (dest->len + src_len)) {
-        dest = astring_resize(dest, (dest->cap + src_len));
-        if (dest == NULL) {
+        size_t new_cap = dest->len + src_len;
+        char* new_raw = realloc(dest->raw, new_cap + 1);
+
+        if (new_raw == NULL) {
             return NULL;
         }
+
+        dest->raw = new_raw;
+        dest->cap = new_cap;
     }
 
     memcpy((dest->raw + dest->len), src, src_len);
-    dest->raw[dest->cap - 1] = '\0';
+    dest->raw[dest->len + src_len] = '\0';
 
     dest->len += src_len;
 
@@ -213,7 +218,7 @@ astring_t* prepend_impl(astring_t* dest, const char* src, size_t src_len) {
     // shift the string to the right
     memmove((dest->raw + src_len), dest->raw, dest->len);
     memcpy(dest->raw, src, src_len);
-    dest->raw[dest->cap - 1] = '\0';
+    dest->raw[dest->len + src_len] = '\0';
 
     dest->len += src_len;
 

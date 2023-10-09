@@ -17,31 +17,28 @@ file(MAKE_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 # find and link against libcurl
 find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIR})
-
-# astring static library
-set(ASTRING_SOURCES
-    src/astring.c
-)
-set(ASTRING_HEADERS
-    include/astring.h
-)
-add_library(astring STATIC ${ASTRING_SOURCES} ${ASTRING_HEADERS})
-target_include_directories(astring PUBLIC include)
-
-# querystring static library
-set(QUERYSTRING_SOURCES
-    src/querystring.c
-)
-set(QUERYSTRING_HEADERS
-    include/querystring.h
-)
-add_library(querystring STATIC ${QUERYSTRING_SOURCES} ${QUERYSTRING_HEADERS})
-target_include_directories(querystring PUBLIC include)
+link_libraries(${CURL_LIBRARIES})
 
 # curlybot executable
 set(CURLYBOT_SOURCES
     src/curlybot.c
+    src/astring.c
+    src/querystring.c
+    src/urlencode.c
 )
-add_executable(curlybot ${CURLYBOT_SOURCES})
+set(CURLYBOT_HEADERS
+    include/astring.h
+    include/querystring.h
+    include/urlencode.h
+)
+
+add_executable(curlybot ${CURLYBOT_SOURCES} ${CURLYBOT_HEADERS})
 target_include_directories(curlybot PUBLIC include)
-target_link_libraries(curlybot astring querystring ${CURL_LIBRARIES})
+target_link_libraries(curlybot ${CURL_LIBRARIES})
+
+# Create a custom target to run the program
+add_custom_target(run
+    COMMAND ${CMAKE_BINARY_DIR}/bin/curlybot
+    DEPENDS curlybot
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)

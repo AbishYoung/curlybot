@@ -273,16 +273,37 @@ astring_t* querystring_get(const querystring_t* qs, const char* key) {
 astring_t* querystring_tostring(const querystring_t* qs) {
     if (qs == NULL) return NULL;
 
+    CURL* curl = curl_easy_init();
     astring_t* str = astring_new(32);
     size_t i = 0;
 
+    if (str == NULL) return NULL;
+    if (curl == NULL) {
+        astring_free(str);
+        return NULL;
+    }
+
     for (; i < qs->len; i++) {
-        str = astring_append(str, qs->pairs[i]->key->raw);
+        astring_t* encoded_key = urlencode(curl, qs->pairs[i]->key);
+        astring_t* encoded_value = urlencode(curl, qs->pairs[i]->value);
+
+        if (encoded_key == NULL || encoded_value == NULL) {
+            astring_free(encoded_key);
+            astring_free(encoded_value);
+            continue;
+        }
+
+        str = astring_append(str, encoded_key->raw);
         str = astring_append(str, "=");
-        str = astring_append(str, qs->pairs[i]->value->raw);
+        str = astring_append(str, encoded_value->raw);
+
+        astring_free(encoded_key);
+        astring_free(encoded_value);
 
         if (i < qs->len - 1) astring_append(str, "&");
     }
+
+    curl_easy_cleanup(curl);
 
     return astring_fit(str);
 }

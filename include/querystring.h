@@ -26,8 +26,10 @@
 #define __QUERYSTRING_H__
 
 #include <stdlib.h>
+#include <curl/curl.h>
 
 #include "astring.h"
+#include "urlencode.h"
 
 typedef struct {
     astring_t* key;
